@@ -25,7 +25,7 @@ const CardList: React.FC = () => {
   const [articlesPerPage] = useState<number>(8);
 
   const API_KEY = '743c242b48f04ba397a3232a5838dad6';
-  const API_URL = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${API_KEY}`;
+  const API_URL = `https://newsapi.org/v2/everything?q=apple&from=2025-01-13&to=2025-01-13&sortBy=popularity&apiKey=${API_KEY}`;
 
   useEffect(() => {
     const fetchArticles = async () => {
