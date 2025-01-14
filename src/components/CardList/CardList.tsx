@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Card from '../Card/Card';
+
 import cardImage from '../../assets/images/broken-image.png';
+
+import Pagination from '../Pagination/Pagination';
+import Loading from '../Loading/Loading';
+import Card from '../Card/Card';
+
 import styles from './CardList.module.css';
-import ReactPaginate from 'react-paginate';
 
 interface Article {
   source: {
@@ -73,42 +77,36 @@ const CardList: React.FC = () => {
   const totalPages = Math.ceil(totalArticles / articlesPerPage);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (
-    <div>
-      {articles.length > 0 && <>
-        <ul className={styles.list}>
-          {articles.map((article, index) => (
-            <Card
-              key={index}
-              title={article.title}
-              description={article.description}
-              image={article.urlToImage || cardImage}
-              url={article.url}
-              publishedAt={article.publishedAt}
-              name={article.source.name || ''}
-            />
-          ))}
-        </ul>
-        <ReactPaginate
-          previousLabel={'<<'}
-          nextLabel={'>>'}
-          breakLabel={'...'}
-          pageCount={totalPages}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={5}
-          onPageChange={handlePageChange}
-          containerClassName={styles.pagination}
-          activeClassName={styles.active}
-          disabledClassName={styles.disabled}
-          forcePage={currentPage}
-        />
-      </>}
-
-      {articles.length === 0 && <div>No articles found</div>}
-    </div>
+    <>
+      {articles.length > 0 ? (
+        <>
+          <ul className={styles.list}>
+            {articles.map((article, index) => (
+              <Card
+                key={index}
+                title={article.title}
+                description={article.description}
+                image={article.urlToImage || cardImage}
+                url={article.url}
+                publishedAt={article.publishedAt}
+                name={article.source.name || ''}
+              />
+            ))}
+          </ul>
+          <Pagination
+            pageCount={totalPages}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        </>
+      ) : (
+        <div>No articles found</div>
+      )}
+    </>
   );
 };
 
